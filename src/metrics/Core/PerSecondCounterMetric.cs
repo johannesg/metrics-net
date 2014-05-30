@@ -18,7 +18,7 @@ namespace metrics.Core
         private readonly CancellationTokenSource _token = new CancellationTokenSource();
 
 
-        private readonly EWMA _ewma = EWMA.OneSecondEWMA();
+        private EWMA _ewma = EWMA.OneSecondEWMA();
 
 
         private void TimeElapsed()
@@ -36,7 +36,10 @@ namespace metrics.Core
         {
             get
             {
-                var metric = new PerSecondCounterMetric(EventType, RateUnit);
+                var metric = new PerSecondCounterMetric(EventType, RateUnit)
+                {
+                  _ewma = _ewma
+                };
 
                 return metric;
             }

@@ -59,7 +59,11 @@ namespace metrics.Reporting
                     {
                         WriteTimer(sb, (TimerMetricBase)metric);
                     }
-                    sb.AppendLine();
+                    else if (metric is PerSecondCounterMetric)
+                    {
+                      WritePerSecondCounter(sb, (PerSecondCounterMetric) metric);
+                    }
+                  sb.AppendLine();
                 }
                 sb.AppendLine();
             }
@@ -67,7 +71,7 @@ namespace metrics.Reporting
             return sb.ToString();
         }
 
-        protected void WriteGauge(StringBuilder sb, GaugeMetric gauge)
+      protected void WriteGauge(StringBuilder sb, GaugeMetric gauge)
         {
             sb.Append("    value = ");
             sb.AppendLine(gauge.ValueAsString);
@@ -77,6 +81,13 @@ namespace metrics.Reporting
         {
             sb.Append("    count = ");
             sb.AppendLine(counter.Count.ToString());
+        }
+
+        private void WritePerSecondCounter(StringBuilder sb, PerSecondCounterMetric counter)
+        {
+          var unit = Abbreviate(counter.RateUnit);
+          sb.AppendFormat("    rate = {0} {1}/{2}\n", counter.CurrentValue, counter.EventType, unit);
+          sb.AppendLine(counter.CurrentValue.ToString());
         }
 
         protected void WriteMetered(StringBuilder sb, IMetered meter)
