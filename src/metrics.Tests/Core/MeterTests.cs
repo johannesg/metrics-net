@@ -58,6 +58,7 @@ namespace metrics.Tests.Core
             Trace.WriteLine("Fifteen minute rate:" + meter.FifteenMinuteRate);
 
             Assert.IsTrue(meanRate > 0);
+            Trace.WriteLine("Mean rate:" + meter.MeanRate);
         }
     }
 }

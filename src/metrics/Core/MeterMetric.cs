@@ -15,7 +15,7 @@ namespace metrics.Core
     public class MeterMetric : IMetric, IMetered, IDisposable
     {
         private AtomicLong _count = new AtomicLong();
-        private readonly long _startTime = DateTime.Now.Ticks;
+        private long _startTime = DateTime.Now.Ticks;
         private static readonly TimeSpan Interval = TimeSpan.FromSeconds(5);
 
         private EWMA _m1Rate = EWMA.OneMinuteEWMA();
@@ -180,6 +180,7 @@ namespace metrics.Core
             {
                 var metric = new MeterMetric(EventType, RateUnit)
                                  {
+                                     _startTime = _startTime,                                   
                                      _count = Count,
                                      _m1Rate = _m1Rate,
                                      _m5Rate = _m5Rate,
